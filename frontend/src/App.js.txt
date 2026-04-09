@@ -1,0 +1,53 @@
+import React, { useState } from "react";
+
+export default function App() {
+  const [url, setUrl] = useState("");
+  const [images, setImages] = useState([]);
+
+  const scrape = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url })
+      });
+
+      const data = await res.json();
+      setImages(data.images || []);
+    } catch (err) {
+      alert("Error fetching images");
+    }
+  };
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>🚀 Image Scraper</h1>
+
+      <input
+        placeholder="Enter website URL"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        style={{ width: "60%", padding: 10 }}
+      />
+
+      <button onClick={scrape} style={{ marginLeft: 10 }}>
+        Scrape
+      </button>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 10,
+          marginTop: 20
+        }}
+      >
+        {images.map((img, i) => (
+          <img key={i} src={img} alt="" style={{ width: "100%" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
