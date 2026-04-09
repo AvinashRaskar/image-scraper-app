@@ -1,10 +1,7 @@
 async function scrape() {
   const url = document.getElementById("url").value;
 
-  const res = await fetch(
-    `https://your-backend.onrender.com/scrape?url=${url}`
-  );
-
+  const res = await fetch(`/scrape?url=${url}`);
   const data = await res.json();
 
   const resultDiv = document.getElementById("result");
